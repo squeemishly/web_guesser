@@ -13,18 +13,10 @@ class WebGuesser
       "white"
     elsif answer.to_i == number
       "green"
-    elsif too_high(answer)
-      if way_too_high(answer)
-        "red"
-      else
-        "lightcoral"
-      end
-    elsif too_low(answer)
-      if way_too_low(answer)
-        "red"
-      else
-        "lightcoral"
-      end
+    elsif way_too_high(answer) || way_too_low(answer)
+      "red"
+    elsif too_high(answer) || too_low(answer)
+      "lightcoral"
     end
   end
 
@@ -32,19 +24,15 @@ class WebGuesser
     if answer.nil?
       message = "Guess the secret number in the field below."
     elsif answer.to_i == number
-      message = "You guessed #{number} correctly! Now guess the new number."
+      message = "You guessed #{number} correctly!"
+    elsif way_too_high(answer)
+      message = "You're waaay too high!"
     elsif too_high(answer)
-      if way_too_high(answer)
-        message = "You're waaay too high!"
-      else
-        message = "You guessed too high! Try again!"
-      end
+      message = "You guessed too high! Try again!"
+    elsif way_too_low(answer)
+      message = "You're waaay too low!"
     elsif too_low(answer)
-      if way_too_low(answer)
-        message = "You're waaay too low!"
-      else
-        message = "You guessed too low! Try again!"
-      end
+      message = "You guessed too low! Try again!"
     end
   end
 
