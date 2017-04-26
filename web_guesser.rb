@@ -10,14 +10,22 @@ class WebGuesser
 
   def messager(answer)
     if answer.nil?
-      message = "Guess the secret number in the form below."
-    elsif answer.to_i > number
-      message = "You guessed too high! Try again!"
-    elsif answer.to_i < number
-      message = "You guessed too low! Try again!"
+      message = "Guess the secret number in the form below. (it is #{number})"
     elsif answer.to_i == number
       @number = rand(100)
-      message = "You guessed correctly! Now guess the new number."
+      message = "You guessed correctly! Now guess the new number. (it is #{number})"
+    elsif answer.to_i > number
+      if answer.to_i > (number + 5)
+        message = "You're waaay too high!"
+      else
+        message = "You guessed too high! Try again! (it is #{number})"
+      end
+    elsif answer.to_i < number
+      if answer.to_i < (number - 5)
+        message = "You're waaay too low!"
+      else
+        message = "You guessed too low! Try again! (it is #{number})"
+      end
     end
   end
 
