@@ -1,21 +1,31 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-NUMBER = rand(100)
+class WebGuesser
+  attr_reader :number
 
-def messager(answer)
-  if answer.nil?
-    message = "Guess the secret NUMBER in the form below. The secret NUMBER is #{NUMBER}"
-  elsif answer.to_i > NUMBER
-    message = "You guessed too high! Try again! The secret NUMBER is #{NUMBER}"
-  elsif answer.to_i < NUMBER
-    message = "You guessed too low! Try again! The secret NUMBER is #{NUMBER}"
-  elsif answer.to_i == NUMBER
-    message = "You guessed correctly! Congratulations!"
+  def initialize
+    @number = rand(100)
   end
+
+  def messager(answer)
+    if answer.nil?
+      message = "Guess the secret number in the form below."
+    elsif answer.to_i > number
+      message = "You guessed too high! Try again!"
+    elsif answer.to_i < number
+      message = "You guessed too low! Try again!"
+    elsif answer.to_i == number
+      @number = rand(100)
+      message = "You guessed correctly! Now guess the new number."
+    end
+  end
+
 end
+
+guesser = WebGuesser.new
 
 get '/' do
   answer = params['guess']
-  erb :index, :locals => {:message => messager(answer)}
+  erb :index, :locals => {:message => guesser.messager(answer)}
 end
